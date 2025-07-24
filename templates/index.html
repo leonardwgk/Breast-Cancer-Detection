@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Predictor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>🧪 Breast Cancer Prediction</h2>
+    <form method="POST">
+        {% for i in range(1, 31) %}
+            Fitur {{ i }}: <input type="number" step="any" name="f{{ i }}" required><br>
+        {% endfor %}
+        <br>
+        <input type="submit" value="Prediksi">
+    </form>
+
+    {% if hasil %}
+        <h3>📊 Hasil Prediksi:</h3>
+        <p><strong>{{ hasil }}</strong></p>
+        {% if risiko_ganas %}
+            <p>⚠️ Risiko Ganas: {{ risiko_ganas }}</p>
+            <p>🔬 Risiko Jinak: {{ risiko_jinak }}</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

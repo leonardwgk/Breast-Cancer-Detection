@@ -7,12 +7,8 @@ https://www.analyticsvidhya.com/blog/2017/09/understaing-support-vector-machine-
 
 2)
 
-https://www.analyticsvidhya.com/blog/2017/09/understaing-support-vector-machine-example-code/
-
-3)
-
 https://en.wikipedia.org/wiki/Support-vector_machine
 
-4)
+3)
 
 https://towardsdatascience.com/support-vector-machine-introduction-to-machine-learning-algorithms-934a444fca47

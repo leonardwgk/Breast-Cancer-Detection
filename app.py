@@ -1,37 +1,48 @@
 from flask import Flask, render_template, request
 import numpy as np
 import joblib
+import sklearn.datasets
 
 app = Flask(__name__)
-model = joblib.load("model_svm.pkl")
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    hasil = None
-    risiko_ganas = None
-    risiko_jinak = None
+# Load model
+model = joblib.load("breast_cancer_model.pkl")
 
-    if request.method == "POST":
-        try:
-            features = []
-            for i in range(1, 31):
-                val = request.form.get(f"f{i}")
-                if val.strip() == "":
-                    raise ValueError("Semua fitur harus diisi.")
-                features.append(float(val))
+# Load dataset (untuk ambil nama fitur asli)
+breast_cancer_dataset = sklearn.datasets.load_breast_cancer()
 
-            arr = np.array([features])
-            proba = model.predict_proba(arr)[0]
-            pred = model.predict(arr)[0]
+# Fungsi untuk ambil nama fitur
+def get_feature_names(model):
+    # Kalau model pipeline
+    if hasattr(model, 'named_steps'):
+        # Ambil step terakhir (misal: 'svc')
+        final_step = list(model.named_steps.values())[-1]
+        if hasattr(final_step, 'feature_names_in_'):
+            return final_step.feature_names_in_
+    # Kalau model biasa (non-pipeline)
+    if hasattr(model, 'feature_names_in_'):
+        return model.feature_names_in_
+    # Default: ambil dari dataset sklearn
+    return breast_cancer_dataset.feature_names
 
-            hasil = "Tumor Ganas (Malignant)" if pred == 0 else "Tumor Jinak (Benign)"
-            risiko_ganas = f"{proba[0]*100:.2f}%"
-            risiko_jinak = f"{proba[1]*100:.2f}%"
+feature_names = get_feature_names(model)
 
-        except Exception as e:
-            hasil = f"❌ Error: {e}"
+@app.route('/')
+def index():
+    return render_template('index.html', feature_names=feature_names)
 
-    return render_template("index.html", hasil=hasil, risiko_ganas=risiko_ganas, risiko_jinak=risiko_jinak)
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Ambil input dari form
+    features = [float(request.form[f'feature_{i}']) for i in range(30)]
+    features_array = np.array(features).reshape(1, -1)
+
+    # Prediksi
+    prediction = model.predict(features_array)[0]
+    proba = model.predict_proba(features_array)[0][prediction] * 100 if hasattr(model, 'predict_proba') else None
+    result = "Benign (Jinak)" if prediction == 1 else "Malignant (Ganas)"
+
+    return render_template('result.html', result=result, proba=proba)
 
 if __name__ == "__main__":
     app.run(debug=True)

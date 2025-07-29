@@ -1,0 +1,42 @@
+body {
+    /* background: linear-gradient(135deg, #4facfe, #00f2fe); */
+    background-color: rgb(39, 106, 250);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+form {
+    background: #ffffffdd;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+label {
+    font-weight: 500;
+}
+
+input.form-control {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: all 0.2s;
+}
+
+input.form-control:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 5px rgba(79, 172, 254, 0.5);
+}
+
+.card {
+    background: #ffffffee;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+p.display-5 {
+    color: #333;
+    font-weight: 600;
+}

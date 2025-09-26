@@ -60,7 +60,7 @@
     <h1 class="text-center mb-4">🔍 DiagnoPink</h1>
     <form action="/predict" method="post">
         <div class="row">
-            {% for i in range(30) %}
+            {% for i in range(feature_names|length) %}
             <div class="col-md-4 mb-3">
                 <input type="number" step="any" name="feature_{{ i }}" placeholder="{{ feature_names[i] | capitalize }}" class="form-control feature-input" required>
             </div>
